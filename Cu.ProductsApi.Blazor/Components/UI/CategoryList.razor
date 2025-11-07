@@ -1,0 +1,18 @@
+﻿
+<div class="row">
+    <button class="btn btn-outline-info" @onclick="@(() => OnAdd.InvokeAsync())">Add</button>
+    @foreach(var categoryModel in CategoryModels)
+    { 
+        <div class="col col-lg-2 border border-1 rounded rounded-2 text-center m-2 p-2">
+            <img class="img-fluid" src="@categoryModel.Image" />
+            <p>@categoryModel.Name</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<CategoryModel> CategoryModels { get; set; }
+    [Parameter]
+    public EventCallback OnAdd { get; set; }
+}

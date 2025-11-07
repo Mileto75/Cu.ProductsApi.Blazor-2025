@@ -1,0 +1,62 @@
+﻿@page "/apiTestCode"
+@inject IProductService ProductService
+
+@if(categoryModels is null)
+{ 
+    <LoadingComponent></LoadingComponent>
+}
+else
+{ 
+    @foreach(var categoryModel in categoryModels)
+    { 
+        <p>@categoryModel.Id:@categoryModel.Name</p>
+    }
+}
+
+@code {
+    private IEnumerable<CategoryModel> categoryModels;
+    private CategoryModel categoryModel;
+
+    protected async  override Task OnInitializedAsync()
+    {
+        //GetAll
+        var result = await ProductService.GetAllCategoriesAsync();
+        if(result.IsSuccess)
+        {
+            categoryModels = result.Data;
+        }
+        //GetById
+
+        var resultById = await ProductService.GetCategoryByIdAsync(22);
+        if (resultById.IsSuccess)
+        {
+            categoryModel = resultById.Data;
+        }
+        //create category
+        CategoryModel newCategory = new CategoryModel
+        {
+            Name = "Pc's",
+            Image = "https://placeimg.com/640/480/any",
+        };
+        //var resultCreate = await ProductService.CreateCategoryAsync(newCategory);
+        //if (resultCreate.IsSuccess)
+        //{
+        //    categoryModel = resultCreate.Data;
+        //}
+
+        //update category
+        //var resultUpdate = await ProductService.GetCategoryByIdAsync(49);
+        //resultUpdate.Data.Name = "Laptops";
+        //resultUpdate = await ProductService.UpdateCategoryAsync(resultUpdate.Data);
+        //if (resultUpdate.IsSuccess)
+        //{
+        //    categoryModel = resultUpdate.Data;
+        //}
+        //delete category
+        //var resultDelete = await ProductService.DeleteCategoryAsync(49);
+        //if (resultDelete.IsSuccess)
+        //{
+        //    categoryModel = resultDelete.Data;
+        //}
+    }
+}

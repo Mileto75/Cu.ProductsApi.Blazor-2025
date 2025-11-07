@@ -1,0 +1,64 @@
+﻿@page "/categories"
+@inject IProductService ProductService
+@if(error is not null)
+{ 
+    <ErrorComponent>@error</ErrorComponent>
+}
+else
+{ 
+    if(categoryModels is null)
+    { 
+        <LoadingComponent></LoadingComponent>
+    }
+    else
+    { 
+        @if(selectedCategory is null)
+        {
+            <CategoryList CategoryModels="categoryModels"
+                          OnAdd="Add"
+                          ></CategoryList>
+        }
+        else
+        { 
+            //show the add category form
+            <CategoryForm CategoryModel="selectedCategory"
+                          OnCancel="Cancel"
+                          ></CategoryForm>
+        }
+    }
+}
+@code {
+    private IEnumerable<CategoryModel> categoryModels;
+    private CategoryModel selectedCategory;
+    private string error = null;
+
+    protected async override Task OnInitializedAsync()
+    {
+        //get the categories
+        await GetCategories();
+    }
+    private async Task GetCategories()
+    {
+        categoryModels = null;
+        error = null;
+        var result = await ProductService.GetAllCategoriesAsync();
+        if (result.IsSuccess)
+        {
+            categoryModels = result.Data;
+        }
+        else
+        {
+            error = result.Errors.First();
+        }
+    }
+    /*crud methods*/
+    //pass this as callback method to the categoriesList
+    private void Add()
+    {
+        selectedCategory = new();
+    }
+    private void Cancel()
+    {
+        selectedCategory = null;
+    }
+}

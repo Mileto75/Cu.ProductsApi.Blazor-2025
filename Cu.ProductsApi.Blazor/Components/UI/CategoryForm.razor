@@ -1,0 +1,31 @@
+﻿
+<div class="row">
+    <div class="col col-lg-5 mx-auto border border-1 rounded rounded-2 m-2 p-2">
+        <h5>Category</h5>
+        <EditForm Model="CategoryModel" 
+                  OnValidSubmit="@(()=> OnSave.InvokeAsync(CategoryModel))">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+          <label for="exampleInput">Name:</label>
+          <InputText class="form-control" @bind-Value="CategoryModel.Name" />
+          <ValidationMessage For="@(()=> CategoryModel.Name)" />  
+        </div>
+        <div class="form-group">
+          <label for="exampleInput">Image</label>
+          <InputText class="form-control" @bind-Value="CategoryModel.Image" />
+          <ValidationMessage For="@(()=> CategoryModel.Image)" />
+        </div>
+        <button type="submit" class="btn btn-outline-info">Save</button>
+        <button type="button" class="btn btn-outline-warning" @onclick="@(() => OnCancel.InvokeAsync())">Cancel</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+    [Parameter]
+    public EventCallback<CategoryModel> OnSave{ get; set; }
+    [Parameter]
+    public CategoryModel CategoryModel { get; set; }
+}
