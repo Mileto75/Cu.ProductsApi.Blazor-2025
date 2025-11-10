@@ -16,6 +16,8 @@ else
         {
             <CategoryList CategoryModels="categoryModels"
                           OnAdd="Add"
+                          OnEdit="Update"
+                          OnDelete="Delete"
                           ></CategoryList>
         }
         else
@@ -23,6 +25,7 @@ else
             //show the add category form
             <CategoryForm CategoryModel="selectedCategory"
                           OnCancel="Cancel"
+                          OnSave="Create"
                           ></CategoryForm>
         }
     }
@@ -39,7 +42,6 @@ else
     }
     private async Task GetCategories()
     {
-        categoryModels = null;
         error = null;
         var result = await ProductService.GetAllCategoriesAsync();
         if (result.IsSuccess)
@@ -57,8 +59,37 @@ else
     {
         selectedCategory = new();
     }
+    private void Update(CategoryModel toUpdate)
+    {
+        selectedCategory = toUpdate;
+    }
     private void Cancel()
     {
         selectedCategory = null;
+    }
+    private async Task Delete(CategoryModel toDelete)
+    {
+        categoryModels = null;
+        var result = await ProductService.DeleteCategoryAsync(toDelete.Id);
+        if(!result.IsSuccess)
+        {
+            error = result.Errors.First(); //to be quick and dirty
+        }
+        selectedCategory = null;
+        await GetCategories();
+    }
+    private async Task Create(CategoryModel categoryModel)
+    {
+        categoryModels = null;
+        if(categoryModel.Id == 0)
+        {
+            await ProductService.CreateCategoryAsync(categoryModel);
+        }
+        else
+        {
+            await ProductService.UpdateCategoryAsync(categoryModel);
+        }
+        selectedCategory = null;
+        await GetCategories();
     }
 }

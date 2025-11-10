@@ -6,6 +6,11 @@
         <div class="col col-lg-2 border border-1 rounded rounded-2 text-center m-2 p-2">
             <img class="img-fluid" src="@categoryModel.Image" />
             <p>@categoryModel.Name</p>
+            <p>
+                <button type="button" class="btn btn-outline-warning" @onclick="@(()=> OnEdit.InvokeAsync(categoryModel))">Edit</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="@(() => OnDelete.InvokeAsync(categoryModel))" >Delete</button>
+            </p>
+
         </div>
     }
 </div>
@@ -15,4 +20,8 @@
     public IEnumerable<CategoryModel> CategoryModels { get; set; }
     [Parameter]
     public EventCallback OnAdd { get; set; }
+    [Parameter]
+    public EventCallback<CategoryModel> OnEdit { get; set; }
+    [Parameter]
+    public EventCallback<CategoryModel> OnDelete { get; set; }
 }
