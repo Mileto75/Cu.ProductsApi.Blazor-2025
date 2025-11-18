@@ -30,11 +30,6 @@ namespace Cu.ProductsApi.Blazor.Services
             return resultModel;
         }
 
-        public Task<ResultModel<ProductModel>> CreateProductAsync(CategoryModel categoryModel)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ResultModel<CategoryModel>> DeleteCategoryAsync(int id)
         {
             var resultModel = new ResultModel<CategoryModel>();
@@ -48,10 +43,7 @@ namespace Cu.ProductsApi.Blazor.Services
             return resultModel;
         }
 
-        public Task<ResultModel<ProductModel>> DeleteProductAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<ResultModel<IEnumerable<CategoryModel>>> GetAllCategoriesAsync()
         {
@@ -68,10 +60,7 @@ namespace Cu.ProductsApi.Blazor.Services
             return resultModel;
         }
 
-        public Task<ResultModel<IEnumerable<ProductModel>>> GetAllProductsAsync()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<ResultModel<CategoryModel>> GetCategoryByIdAsync(int id)
         {
@@ -88,10 +77,7 @@ namespace Cu.ProductsApi.Blazor.Services
             return resultModel;
         }
 
-        public Task<ResultModel<ProductModel>> GetProductByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<ResultModel<CategoryModel>> UpdateCategoryAsync(CategoryModel categoryModel)
         {
@@ -107,10 +93,77 @@ namespace Cu.ProductsApi.Blazor.Services
             resultModel.Errors = new List<string> { "Not updated!" };
             return resultModel;
         }
-
-        public Task<ResultModel<ProductModel>> UpdateProductModelAsync(CategoryModel categoryModel)
+        #region productCrud
+        public async Task<ResultModel<ProductModel>> CreateProductAsync(ProductModel productModel)
         {
-            throw new NotImplementedException();
+            var resultModel = new ResultModel<ProductModel>();
+            var result = await _httpClient.PostAsJsonAsync("products", productModel);
+            if (result.IsSuccessStatusCode)
+            {
+                resultModel.IsSuccess = true;
+                var content = await result.Content.ReadAsStringAsync();
+                resultModel.Data = resultModel.Data = JsonSerializer.Deserialize<ProductModel>(content);
+                return resultModel;
+            }
+            resultModel.Errors = new List<string> { "Not created!" };
+            return resultModel;
         }
+        public async Task<ResultModel<ProductModel>> DeleteProductAsync(int id)
+        {
+            var resultModel = new ResultModel<ProductModel>();
+            var result = await _httpClient.DeleteAsync($"products/{id}");
+            if (result.IsSuccessStatusCode)
+            {
+                resultModel.IsSuccess = true;
+                return resultModel;
+            }
+            resultModel.Errors = new List<string> { "Not deleted!" };
+            return resultModel;
+        }
+        public async Task<ResultModel<IEnumerable<ProductModel>>> GetAllProductsAsync()
+        {
+            ResultModel<IEnumerable<ProductModel>> resultModel = new();
+            var result = await _httpClient.GetAsync("products");
+            if (result.IsSuccessStatusCode)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                resultModel.Data = JsonSerializer.Deserialize<IEnumerable<ProductModel>>(content);
+                resultModel.IsSuccess = true;
+                return resultModel;
+            }
+            resultModel.Errors = new List<string> { "Connection error!" };
+            return resultModel;
+        }
+        public async Task<ResultModel<ProductModel>> GetProductByIdAsync(int id)
+        {
+            ResultModel<ProductModel> resultModel = new();
+            var result = await _httpClient.GetAsync($"products/{id}");
+            if (result.IsSuccessStatusCode)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                resultModel.Data = JsonSerializer.Deserialize<ProductModel>(content);
+                resultModel.IsSuccess = true;
+                return resultModel;
+            }
+            resultModel.Errors = new List<string> { "Category not found!" };
+            return resultModel;
+        }
+
+        public async Task<ResultModel<ProductModel>> UpdateProductAsync(ProductModel productModel)
+        {
+            var resultModel = new ResultModel<ProductModel>();
+            var result = await _httpClient.PutAsJsonAsync($"products/{productModel.Id}", productModel);
+            if (result.IsSuccessStatusCode)
+            {
+                resultModel.IsSuccess = true;
+                var content = await result.Content.ReadAsStringAsync();
+                resultModel.Data = resultModel.Data = JsonSerializer.Deserialize<ProductModel>(content);
+                return resultModel;
+            }
+            resultModel.Errors = new List<string> { "Not updated!" };
+            return resultModel;
+        }
+        #endregion
+
     }
 }
