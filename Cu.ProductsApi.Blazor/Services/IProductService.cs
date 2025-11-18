@@ -10,5 +10,10 @@ namespace Cu.ProductsApi.Blazor.Services
         Task<ResultModel<CategoryModel>> CreateCategoryAsync(CategoryModel categoryModel);
         Task<ResultModel<CategoryModel>> UpdateCategoryAsync(CategoryModel categoryModel);
         Task<ResultModel<CategoryModel>> DeleteCategoryAsync(int id);
+        Task<ResultModel<IEnumerable<ProductModel>>> GetAllProductsAsync();
+        Task<ResultModel<ProductModel>> GetProductByIdAsync(int id);
+        Task<ResultModel<ProductModel>> CreateProductAsync(CategoryModel categoryModel);
+        Task<ResultModel<ProductModel>> UpdateProductModelAsync(CategoryModel categoryModel);
+        Task<ResultModel<ProductModel>> DeleteProductAsync(int id);
     }
 }

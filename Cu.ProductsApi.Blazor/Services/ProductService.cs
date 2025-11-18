@@ -30,6 +30,11 @@ namespace Cu.ProductsApi.Blazor.Services
             return resultModel;
         }
 
+        public Task<ResultModel<ProductModel>> CreateProductAsync(CategoryModel categoryModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ResultModel<CategoryModel>> DeleteCategoryAsync(int id)
         {
             var resultModel = new ResultModel<CategoryModel>();
@@ -41,6 +46,11 @@ namespace Cu.ProductsApi.Blazor.Services
             }
             resultModel.Errors = new List<string> { "Not deleted!" };
             return resultModel;
+        }
+
+        public Task<ResultModel<ProductModel>> DeleteProductAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<ResultModel<IEnumerable<CategoryModel>>> GetAllCategoriesAsync()
@@ -58,6 +68,11 @@ namespace Cu.ProductsApi.Blazor.Services
             return resultModel;
         }
 
+        public Task<ResultModel<IEnumerable<ProductModel>>> GetAllProductsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ResultModel<CategoryModel>> GetCategoryByIdAsync(int id)
         {
             ResultModel<CategoryModel> resultModel = new();
@@ -73,6 +88,11 @@ namespace Cu.ProductsApi.Blazor.Services
             return resultModel;
         }
 
+        public Task<ResultModel<ProductModel>> GetProductByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ResultModel<CategoryModel>> UpdateCategoryAsync(CategoryModel categoryModel)
         {
             var resultModel = new ResultModel<CategoryModel>();
@@ -86,6 +106,11 @@ namespace Cu.ProductsApi.Blazor.Services
             }
             resultModel.Errors = new List<string> { "Not updated!" };
             return resultModel;
+        }
+
+        public Task<ResultModel<ProductModel>> UpdateProductModelAsync(CategoryModel categoryModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }
